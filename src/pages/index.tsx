@@ -1,11 +1,15 @@
-import { useState, FormEvent } from "react";
+import { useState, useContext, FormEvent } from "react";
 import { Flex, FormControl, FormLabel, Input, Button, Center } from "@chakra-ui/react";
+
+import { AuthContext } from "../../contexts/AuthContext";
 
 export default function Home() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  function handleSubmit(event: FormEvent) {
+  const { signIn } = useContext(AuthContext);
+
+  async function handleSubmit(event: FormEvent) {
     event.preventDefault();
 
     const data = {
@@ -13,7 +17,7 @@ export default function Home() {
       password
     };
 
-    alert(data.email)
+    await signIn(data);
   }
 
   return (
