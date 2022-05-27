@@ -1,5 +1,7 @@
 import { useState, useContext, FormEvent } from "react";
 import { Flex, FormControl, FormLabel, Input, Button, Center } from "@chakra-ui/react";
+import { GetServerSideProps } from "next";
+import { parseCookies } from "nookies";
 
 import { AuthContext } from "../contexts/AuthContext";
 
@@ -35,4 +37,21 @@ export default function Home() {
       </FormControl>
     </Flex>
   )
+}
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const cookies  = parseCookies(ctx);
+
+  if (cookies["auth_jwt.token"]) {
+    return {
+      redirect: {
+        destination: "/dashboard",
+        permanent: false
+      }
+    }
+  }
+
+  return {
+    props: {}
+  };
 }
